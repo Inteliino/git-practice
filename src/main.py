@@ -8,6 +8,7 @@ from tasks import (
     complete_task,
     filter_tasks,
 )
+from statistics import show_statistics
 
 
 def get_task_id():
@@ -26,7 +27,8 @@ def show_menu():
     print("4. Delete task")
     print("5. Complete task")
     print("6. Filter tasks")
-    print("7. Exit")
+    print("7. Task statistics")
+    print("8. Exit")
 
 
 def main():
@@ -34,7 +36,7 @@ def main():
 
     while True:
         show_menu()
-        choice = input("Choose an option (1-7): ").strip()
+        choice = input("Choose an option (1-8): ").strip()
 
         if choice == "1":
             title = input("Enter task title: ").strip()
@@ -59,8 +61,10 @@ def main():
 
         elif choice == "3":
             task_id = get_task_id()
+
             if task_id is not None:
                 new_title = input("Enter new title: ").strip()
+
                 if new_title:
                     edit_task(task_id, new_title)
                 else:
@@ -68,11 +72,13 @@ def main():
 
         elif choice == "4":
             task_id = get_task_id()
+
             if task_id is not None:
                 delete_task(task_id)
 
         elif choice == "5":
             task_id = get_task_id()
+
             if task_id is not None:
                 complete_task(task_id)
 
@@ -100,11 +106,14 @@ def main():
             filter_tasks(status, priority)
 
         elif choice == "7":
+            show_statistics()
+
+        elif choice == "8":
             print("Goodbye!")
             break
 
         else:
-            print("Invalid option. Please choose 1-7.")
+            print("Invalid option. Please choose 1-8.")
 
 
 if __name__ == "__main__":
