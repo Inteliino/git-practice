@@ -1,1 +1,2 @@
-print("Git practical exercise")
+name = input("Name: ")
+print(f"Hello {name}")
