@@ -77,3 +77,29 @@ def complete_task(task_id):
 if __name__ == "__main__":
     run_migrations()
     list_tasks()
+
+
+def filter_tasks(status=None, priority=None):
+    query = "SELECT id, title, completed, priority FROM tasks WHERE 1=1"
+    parameters = []
+
+    if status == "Pending":
+        query += " AND completed = 0"
+    elif status == "Completed":
+        query += " AND completed = 1"
+
+    if priority in VALID_PRIORITIES:
+        query += " AND priority = ?"
+        parameters.append(priority)
+
+    query += " ORDER BY id"
+
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute(query, parameters).fetchall()
+
+    print("\nFiltered tasks:")
+    for task_id, title, completed, task_priority in rows:
+        task_status = "Completed" if completed else "Pending"
+        print(f"{task_id}. {title} [{task_status}] [{task_priority}]")
+
+    return rows
