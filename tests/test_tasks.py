@@ -10,6 +10,7 @@ from contextlib import closing
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 import tasks
+import statistics
 
 
 class TestTaskManager(unittest.TestCase):
@@ -32,7 +33,11 @@ class TestTaskManager(unittest.TestCase):
         self.db_patch = patch.object(tasks, "DB_PATH", self.db_path)
         self.db_patch.start()
 
+        self.stats_patch = patch.object(statistics, "DB_PATH", self.db_path)
+        self.stats_patch.start()
+
     def tearDown(self):
+        self.stats_patch.stop()
         self.db_patch.stop()
         self.temp_dir.cleanup()
 
@@ -72,6 +77,19 @@ class TestTaskManager(unittest.TestCase):
             ).fetchone()
 
         self.assertIsNone(result)
+
+    def test_task_statistics(self):
+        first_id = tasks.add_task("First task", "High")
+        tasks.add_task("Second task", "Low")
+
+        tasks.complete_task(first_id)
+
+        result = statistics.get_task_statistics()
+
+        self.assertEqual(result["total"], 2)
+        self.assertEqual(result["completed"], 1)
+        self.assertEqual(result["pending"], 1)
+        self.assertEqual(result["completion_rate"], 50.0)
 
 
 if __name__ == "__main__":
