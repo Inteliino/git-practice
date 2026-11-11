@@ -60,6 +60,19 @@ class TestTaskManager(unittest.TestCase):
 
         self.assertEqual(result[0], "Updated task")
 
+    def test_delete_task(self):
+        task_id = tasks.add_task("Task to delete", "Low")
+
+        tasks.delete_task(task_id)
+
+        with closing(sqlite3.connect(self.db_path)) as conn:
+            result = conn.execute(
+                "SELECT id FROM tasks WHERE id = ?",
+                (task_id,)
+            ).fetchone()
+
+        self.assertIsNone(result)
+
 
 if __name__ == "__main__":
     unittest.main()
