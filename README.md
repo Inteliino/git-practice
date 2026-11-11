@@ -1,286 +1,180 @@
-# 
 
-# \# Task Manager
+# Task Manager
 
-# 
+Python task management application developed for the
+Software Development and Maintenance Lifecycle course
+at Vidzeme University of Applied Sciences.
 
-# A Python task management application developed for the Software Development and Maintenance Lifecycle course at Vidzeme University of Applied Sciences.
+## Project Overview
 
-# 
+Task Manager is a command-line application written in Python.
 
-# \## Project Description
+The application uses SQLite to store tasks and demonstrates
+Git version control, database migrations, automated testing,
+and continuous integration with GitHub Actions.
 
-# 
+## Features
 
-# Task Manager is a command-line application that allows users to create, manage and track tasks.
+- Create new tasks
+- View all tasks
+- Edit existing tasks
+- Delete tasks
+- Mark tasks as completed
+- Assign task priorities: Low, Medium, High
+- Filter tasks by status and priority
+- View task statistics
+- Calculate task completion percentage
+- Save tasks permanently in SQLite
 
-# 
+## Technologies
 
-# The project demonstrates:
+- Python 3
+- SQLite
+- Git and GitHub
+- Python unittest
+- GitHub Actions
 
-# \- Git version control
+## Project Structure
 
-# \- Python programming
+    git-practice/
+    |
+    |-- src/
+    |   |-- main.py
+    |   |-- tasks.py
+    |   |-- database.py
+    |   |-- statistics.py
+    |
+    |-- migrations/
+    |   |-- 001_create_tasks.sql
+    |   |-- 002_add_priority.sql
+    |
+    |-- tests/
+    |   |-- test_tasks.py
+    |
+    |-- .github/
+    |   |-- workflows/
+    |       |-- tests.yml
+    |
+    |-- .gitignore
+    |-- README.md
 
-# \- SQLite database integration
+## Installation
 
-# \- Database migrations
+Clone the repository:
 
-# \- Automated unit testing
+    git clone https://github.com/Inteliino/git-practice.git
 
-# \- GitHub Actions CI automation
+Open the project directory:
 
-# 
+    cd git-practice
 
-# \## Features
+Python 3 is required. No additional Python packages are needed.
 
-# 
+## Database Migrations
 
-# \- Add new tasks
+Run database migrations:
 
-# \- View existing tasks
+    python src/database.py
 
-# \- Edit task titles
+On Windows, you can also use:
 
-# \- Delete tasks
+    py src/database.py
 
-# \- Mark tasks as completed
+The project contains two database migrations:
 
-# \- Assign task priorities (Low, Medium, High)
+1. 001_create_tasks.sql - Creates the tasks table.
+2. 002_add_priority.sql - Adds task priority support.
 
-# \- Filter tasks by status and priority
+Applied migrations are recorded in the schema_migrations
+table to prevent duplicate execution.
 
-# \- View task statistics
+## Running the Application
 
-# \- Store tasks in an SQLite database
+Start the application:
 
-# 
+    python src/main.py
 
-# \## Technologies
+On Windows:
 
-# 
+    py src/main.py
 
-# \- Python 3
+## Application Menu
 
-# \- SQLite
+1. Add task
+2. List tasks
+3. Edit task
+4. Delete task
+5. Complete task
+6. Filter tasks
+7. Task statistics
+8. Exit
 
-# \- Git and GitHub
+## Automated Tests
 
-# \- Python unittest
+The application uses Python's built-in unittest framework.
 
-# \- GitHub Actions
+Run all automated tests:
 
-# 
+    python -m unittest discover -s tests -v
 
-# \## Installation
+The project includes five tests:
 
-# 
+1. Task creation
+2. Task editing
+3. Task deletion
+4. Task statistics
+5. Invalid task priority validation
 
-# Clone the repository:
+Tests use a temporary SQLite database to avoid modifying
+real application data.
 
-# 
+## Continuous Integration
 
-# ```bash
+GitHub Actions automatically executes database migrations
+and automated tests when changes are pushed to the main
+branch or a pull request targets main.
 
-# git clone https://github.com/Inteliino/git-practice.git
+Workflow configuration:
 
-# ```
+    .github/workflows/tests.yml
 
-# 
+The workflow performs the following steps:
 
-# Open the project directory:
+1. Checkout repository
+2. Set up Python
+3. Check Python version
+4. Run database migrations
+5. Run automated tests
 
-# 
+## Git Version Control
 
-# ```bash
+This project demonstrates:
 
-# cd git-practice
+- Git repository initialization
+- Git commits and version history
+- Branch creation and switching
+- Merge operations
+- Merge conflict resolution
+- Git remote synchronization
+- Gitignore configuration
+- GitHub repository management
 
-# ```
+The repository contains at least 30 commits documenting
+the development process.
 
-# 
+## Course Requirements
 
-# No additional Python packages are required.
+- Minimum 30 Git commits
+- At least 3 automated tests
+- Automated workflow
+- Database migrations
 
-# 
+## Author
 
-# \## Database Setup
+GitHub: Inteliino
 
-# 
+Vidzeme University of Applied Sciences
 
-# Run database migrations:
+## License
 
-# 
-
-# ```bash
-
-# python src/database.py
-
-# ```
-
-# 
-
-# The application uses SQLite.
-
-# 
-
-# Database migrations are stored in the `migrations` directory:
-
-# 
-
-# \- `001\_create\_tasks.sql` - Creates the tasks table.
-
-# \- `002\_add\_priority.sql` - Adds task priority support.
-
-# 
-
-# The migration system records applied migrations to avoid running them repeatedly.
-
-# 
-
-# \## Running the Application
-
-# 
-
-# Start the application:
-
-# 
-
-# ```bash
-
-# python src/main.py
-
-# ```
-
-# 
-
-# On Windows, you can also use:
-
-# 
-
-# ```bash
-
-# py src/main.py
-
-# ```
-
-# 
-
-# \## Application Menu
-
-# 
-
-# 1\. Add task
-
-# 2\. List tasks
-
-# 3\. Edit task
-
-# 4\. Delete task
-
-# 5\. Complete task
-
-# 6\. Filter tasks
-
-# 7\. Task statistics
-
-# 8\. Exit
-
-# 
-
-# \## Automated Tests
-
-# 
-
-# The project uses Python's built-in unittest framework.
-
-# 
-
-# Run all tests:
-
-# 
-
-# ```bash
-
-# python -m unittest discover -s tests -v
-
-# ```
-
-# 
-
-# The tests cover:
-
-# 
-
-# 1\. Task creation
-
-# 2\. Task editing
-
-# 3\. Task deletion
-
-# 4\. Task statistics
-
-# 
-
-# Tests use a temporary SQLite database to avoid modifying application data.
-
-# 
-
-# \## Continuous Integration
-
-# 
-
-# GitHub Actions automatically runs database migrations and automated tests.
-
-# 
-
-# The workflow is stored in:
-
-# 
-
-# `.github/workflows/tests.yml`
-
-# 
-
-# The workflow runs on pushes and pull requests targeting the `main` branch.
-
-# 
-
-# \## Git Version Control
-
-# 
-
-# The project demonstrates Git concepts such as:
-
-# 
-
-# \- Commits and version history
-
-# \- Branch creation and switching
-
-# \- Merge operations
-
-# \- Merge conflict resolution
-
-# \- Remote repository synchronization
-
-# \- Gitignore configuration
-
-# 
-
-# \## Author
-
-# 
-
-# Student project - Vidzeme University of Applied Sciences
-
-# 
-
-# \## License
-
-# 
-
-# Educational project.
-
-# 
-
+Educational project.
