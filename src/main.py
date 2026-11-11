@@ -6,6 +6,7 @@ from tasks import (
     edit_task,
     delete_task,
     complete_task,
+    filter_tasks,
 )
 
 
@@ -24,7 +25,8 @@ def show_menu():
     print("3. Edit task")
     print("4. Delete task")
     print("5. Complete task")
-    print("6. Exit")
+    print("6. Filter tasks")
+    print("7. Exit")
 
 
 def main():
@@ -32,7 +34,7 @@ def main():
 
     while True:
         show_menu()
-        choice = input("Choose an option (1-6): ").strip()
+        choice = input("Choose an option (1-7): ").strip()
 
         if choice == "1":
             title = input("Enter task title: ").strip()
@@ -75,11 +77,34 @@ def main():
                 complete_task(task_id)
 
         elif choice == "6":
+            status = input(
+                "Status (Pending/Completed/All) [All]: "
+            ).strip().title()
+
+            priority = input(
+                "Priority (Low/Medium/High/All) [All]: "
+            ).strip().title()
+
+            if status in ("", "All"):
+                status = None
+            elif status not in ("Pending", "Completed"):
+                print("Invalid status.")
+                continue
+
+            if priority in ("", "All"):
+                priority = None
+            elif priority not in ("Low", "Medium", "High"):
+                print("Invalid priority.")
+                continue
+
+            filter_tasks(status, priority)
+
+        elif choice == "7":
             print("Goodbye!")
             break
 
         else:
-            print("Invalid option. Please choose 1-6.")
+            print("Invalid option. Please choose 1-7.")
 
 
 if __name__ == "__main__":
