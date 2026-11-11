@@ -1,43 +1,74 @@
 
-tasks = []
+import sqlite3
+
+from database import DB_PATH, run_migrations
+
 
 def add_task(title):
-    tasks.append({"title": title, "completed": False})
-    print(f"Task added: {title}")
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.execute(
+            "INSERT INTO tasks (title, completed) VALUES (?, 0)",
+            (title,)
+        )
+        task_id = cursor.lastrowid
+
+    print(f"Task added: {title} (ID: {task_id})")
+    return task_id
+
 
 def list_tasks():
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute(
+            "SELECT id, title, completed FROM tasks ORDER BY id"
+        ).fetchall()
+
     print("\nTask list:")
-    for number, task in enumerate(tasks, start=1):
-        status = "Completed" if task["completed"] else "Pending"
-        print(f"{number}. {task['title']} [{status}]")
+    for task_id, title, completed in rows:
+        status = "Completed" if completed else "Pending"
+        print(f"{task_id}. {title} [{status}]")
 
-def delete_task(number):
-    if 1 <= number <= len(tasks):
-        removed = tasks.pop(number - 1)
-        print(f"Task deleted: {removed['title']}")
-    else:
-        print("Invalid task number")
+    return rows
 
-def edit_task(number, new_title):
-    if 1 <= number <= len(tasks):
-        old_title = tasks[number - 1]["title"]
-        tasks[number - 1]["title"] = new_title
-        print(f"Task updated: {old_title} -> {new_title}")
-    else:
-        print("Invalid task number")
 
-def complete_task(number):
-    if 1 <= number <= len(tasks):
-        tasks[number - 1]["completed"] = True
-        print(f"Task completed: {tasks[number - 1]['title']}")
+def delete_task(task_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.execute(
+            "DELETE FROM tasks WHERE id = ?",
+            (task_id,)
+        )
+
+    if cursor.rowcount:
+        print("Task deleted")
     else:
-        print("Invalid task number")
+        print("Invalid task ID")
+
+
+def edit_task(task_id, new_title):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.execute(
+            "UPDATE tasks SET title = ? WHERE id = ?",
+            (new_title, task_id)
+        )
+
+    if cursor.rowcount:
+        print("Task updated")
+    else:
+        print("Invalid task ID")
+
+
+def complete_task(task_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.execute(
+            "UPDATE tasks SET completed = 1 WHERE id = ?",
+            (task_id,)
+        )
+
+    if cursor.rowcount:
+        print("Task completed")
+    else:
+        print("Invalid task ID")
+
 
 if __name__ == "__main__":
-    add_task("Learn Git")
-    add_task("Create Python project")
-    add_task("Write automated tests")
-
-    edit_task(2, "Build Python application")
-    complete_task(1)
+    run_migrations()
     list_tasks()
