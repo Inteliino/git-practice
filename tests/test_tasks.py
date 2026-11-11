@@ -91,6 +91,17 @@ class TestTaskManager(unittest.TestCase):
         self.assertEqual(result["pending"], 1)
         self.assertEqual(result["completion_rate"], 50.0)
 
+    def test_invalid_priority(self):
+        with self.assertRaises(ValueError):
+            tasks.add_task("Invalid task", "Unknown")
+
+        with closing(sqlite3.connect(self.db_path)) as conn:
+            total = conn.execute(
+                "SELECT COUNT(*) FROM tasks"
+            ).fetchone()[0]
+
+        self.assertEqual(total, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
