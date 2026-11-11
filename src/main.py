@@ -36,8 +36,19 @@ def main():
 
         if choice == "1":
             title = input("Enter task title: ").strip()
+
             if title:
-                add_task(title)
+                priority = input(
+                    "Priority (Low/Medium/High) [Medium]: "
+                ).strip().title()
+
+                if not priority:
+                    priority = "Medium"
+
+                if priority in ("Low", "Medium", "High"):
+                    add_task(title, priority)
+                else:
+                    print("Invalid priority.")
             else:
                 print("Task title cannot be empty.")
 
