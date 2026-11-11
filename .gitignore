@@ -1,3 +1,22 @@
+# Environment variables
 .env
+
+# Log files
 *.log
+
+# Generated build files
 build/
+
+# SQLite database files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
